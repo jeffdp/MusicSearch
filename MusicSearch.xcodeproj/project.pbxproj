@@ -14,6 +14,8 @@
 		1F25C1B52740515500E809ED /* MusicSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1B42740515500E809ED /* MusicSearchTests.swift */; };
 		1F25C1BF2740515500E809ED /* MusicSearchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1BE2740515500E809ED /* MusicSearchUITests.swift */; };
 		1F25C1C12740515500E809ED /* MusicSearchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1C02740515500E809ED /* MusicSearchUITestsLaunchTests.swift */; };
+		1F25C1CE274051EC00E809ED /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1CD274051EC00E809ED /* Data.swift */; };
+		1F25C1D02740521600E809ED /* CompletionSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1CF2740521600E809ED /* CompletionSearch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		1F25C1BA2740515500E809ED /* MusicSearchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MusicSearchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F25C1BE2740515500E809ED /* MusicSearchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchUITests.swift; sourceTree = "<group>"; };
 		1F25C1C02740515500E809ED /* MusicSearchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		1F25C1CD274051EC00E809ED /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		1F25C1CF2740521600E809ED /* CompletionSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionSearch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,8 @@
 			children = (
 				1F25C1A32740515400E809ED /* MusicSearchApp.swift */,
 				1F25C1A52740515400E809ED /* ContentView.swift */,
+				1F25C1CD274051EC00E809ED /* Data.swift */,
+				1F25C1CF2740521600E809ED /* CompletionSearch.swift */,
 				1F25C1A72740515500E809ED /* Assets.xcassets */,
 				1F25C1A92740515500E809ED /* Preview Content */,
 			);
@@ -258,6 +264,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F25C1A62740515400E809ED /* ContentView.swift in Sources */,
+				1F25C1D02740521600E809ED /* CompletionSearch.swift in Sources */,
+				1F25C1CE274051EC00E809ED /* Data.swift in Sources */,
 				1F25C1A42740515400E809ED /* MusicSearchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

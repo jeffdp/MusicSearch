@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    let completionSeach = CompletionSearch()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack {
+            HStack {
+                Button("Completion") {
+                    completionSeach.runCompletionSearch()
+                }
+            }
+        }
     }
 }
 
