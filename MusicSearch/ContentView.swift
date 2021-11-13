@@ -19,26 +19,12 @@ struct ContentView: View {
                     TextField("Artist", text: $searchTerm)
                 }
                 
-                Section("Completion") {
-                    if completionSeach.foundAlbum?.artworkUrl100 != nil {
-                        HStack {
-                            AsyncImage(url: URL(string: completionSeach.foundAlbum!.artworkUrl100)!)
-                            Text(completionSeach.foundAlbum?.collectionName ?? "")
-                        }
-                    } else {
-                        Text(completionSeach.foundAlbum?.collectionName ?? "")
-                    }
+                Section("completionSeach.foundAlbum") {
+                    AlbumView(album: completionSeach.foundAlbum)
                 }
                 
                 Section("Async") {
-                    if asyncSearch.foundAlbum?.artworkUrl100 != nil {
-                        HStack {
-                            AsyncImage(url: URL(string: asyncSearch.foundAlbum!.artworkUrl100)!)
-                            Text(asyncSearch.foundAlbum?.collectionName ?? "")
-                        }
-                    } else {
-                        Text(asyncSearch.foundAlbum?.collectionName ?? "")
-                    }
+                    AlbumView(album: asyncSearch.foundAlbum)
                 }
             }
             .padding()
@@ -61,8 +47,17 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+struct AlbumView: View {
+    var album: Album?
+    
+    var body: some View {
+        if album?.artworkUrl100 != nil {
+            HStack {
+                AsyncImage(url: URL(string: album!.artworkUrl100)!)
+                Text(album?.collectionName ?? "")
+            }
+        } else {
+            Text(album?.collectionName ?? "")
+        }
     }
 }
