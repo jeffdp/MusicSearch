@@ -7,9 +7,8 @@
 
 import Foundation
 
-class CompletionSearch {
-    var searchTerm = "knopfler"
-    var foundAlbum: Album?
+class CompletionSearch: ObservableObject {
+    @Published var foundAlbum: Album?
     
     func searchCompletion(for artist: String, completion: @escaping (Result<[Collection], MusicError>) -> Void) {
         let url = CollectionSearch.searchUrl(for: artist)
@@ -64,9 +63,9 @@ class CompletionSearch {
         .resume()
     }
 
-    func runCompletionSearch() {
+    func runCompletionSearch(for artist: String) {
         do {
-            searchCompletion(for: searchTerm) { [weak self] result in
+            searchCompletion(for: artist) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {

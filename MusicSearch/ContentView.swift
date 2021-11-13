@@ -8,13 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    let completionSeach = CompletionSearch()
+    @ObservedObject var completionSeach = CompletionSearch()
+    @State var searchTerm = "Knopfler"
     
     var body: some View {
         VStack {
+            Form {
+                Section("Search") {
+                    TextField("Artist", text: $searchTerm)
+                }
+                
+                Section("Results") {
+                    Text(completionSeach.foundAlbum?.collectionName ?? "")
+                }
+            }
+            .padding()
+            
+            Spacer()
+            
             HStack {
                 Button("Completion") {
-                    completionSeach.runCompletionSearch()
+                    completionSeach.runCompletionSearch(for: searchTerm)
                 }
             }
         }
