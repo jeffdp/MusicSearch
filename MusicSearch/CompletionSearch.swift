@@ -10,7 +10,7 @@ import Foundation
 class CompletionSearch: ObservableObject {
     @Published var foundAlbum: Album?
     
-    func searchCompletion(for artist: String, completion: @escaping (Result<[Collection], MusicError>) -> Void) {
+    func collections(for artist: String, completion: @escaping (Result<[Collection], MusicError>) -> Void) {
         let url = CollectionSearch.searchUrl(for: artist)
         let searchRequest = URLRequest(url: url)
         URLSession.shared.dataTask(with: searchRequest) { data, response, error in
@@ -34,7 +34,7 @@ class CompletionSearch: ObservableObject {
         .resume()
     }
 
-    func albumCompletion(albumId: Int, completion: @escaping (Result<Album, MusicError>) -> Void) {
+    func lookup(albumId: Int, completion: @escaping (Result<Album, MusicError>) -> Void) {
         let url = AlbumLookup.lookupUrl(for: albumId)
         let searchRequest = URLRequest(url: url)
         URLSession.shared.dataTask(with: searchRequest) { data, response, error in
@@ -63,29 +63,29 @@ class CompletionSearch: ObservableObject {
         .resume()
     }
 
-    func runCompletionSearch(for artist: String) {
-        do {
-            searchCompletion(for: artist) { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .success(let collections):
-                    print("Found \(collections.count) albums")
-                    let collectionId = collections.randomElement()?.collectionId ?? 0
-                    self.albumCompletion(albumId: collectionId) { result in
-                        DispatchQueue.main.async {
-                            switch result {
-                            case .success(let album):
-                                print(album.collectionName)
-                                self.foundAlbum = album
-                            case .failure(let error):
-                                print(error.localizedDescription)
-                            }
+    func find(artist: String) {
+        foundAlbum = nil
+        
+        collections(for: artist) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let collections):
+                print("Found \(collections.count) albums")
+                let collectionId = collections.randomElement()?.collectionId ?? 0
+                self.lookup(albumId: collectionId) { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let album):
+                            print(album.collectionName)
+                            self.foundAlbum = album
+                        case .failure(let error):
+                            print(error.localizedDescription)
                         }
                     }
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

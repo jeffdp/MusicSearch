@@ -21,7 +21,8 @@ public struct CollectionSearch: Codable {
     public let results: [Collection]
     
     public static func searchUrl(for artist: String) -> URL {
-        URL(string: "https://itunes.apple.com/search?term=\(artist)&entity=album")!
+        let artistTerm = artist.replacingOccurrences(of: " ", with: "+")
+        return URL(string: "https://itunes.apple.com/search?term=\(artistTerm)&entity=album")!
     }
 }
 

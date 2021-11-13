@@ -10,15 +10,32 @@ import Foundation
 class AsyncSearch: ObservableObject {
     @Published var foundAlbum: Album?
 
-    func searchCompletion(for artist: String) async throws -> [Collection] {
-        return []
+    func collections(for artist: String) async throws -> [Collection] {
+        let url = CollectionSearch.searchUrl(for: artist)
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return (try JSONDecoder().decode(CollectionSearch.self, from: data)).results
     }
     
-    func albumCompletion(albumId: Int) async throws -> Album? {
-        return nil
+    func lookup(albumId: Int) async throws -> Album? {
+        let url = AlbumLookup.lookupUrl(for: albumId)
+        let (data, _) = try await URLSession.shared.data(from: url)
+
+        return (try JSONDecoder().decode(AlbumLookup.self, from: data)).results.first
     }
     
-    func runCompletionSearch() {
-        
+    func find(artist: String) {
+        foundAlbum = nil
+
+        Task { @MainActor in
+            do {
+                let collections = try await collections(for: artist)
+                
+                print("Found \(collections.count) albums")
+                let collectionId = collections.randomElement()?.collectionId ?? 0
+                self.foundAlbum = try await lookup(albumId: collectionId)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
     }
 }

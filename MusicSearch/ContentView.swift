@@ -9,17 +9,36 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var completionSeach = CompletionSearch()
-    @State var searchTerm = "Knopfler"
+    @ObservedObject var asyncSearch = AsyncSearch()
+    @State var searchTerm = "Mark Knopfler"
     
     var body: some View {
         VStack {
             Form {
-                Section("Search") {
+                Section("Search Terms") {
                     TextField("Artist", text: $searchTerm)
                 }
                 
-                Section("Results") {
-                    Text(completionSeach.foundAlbum?.collectionName ?? "")
+                Section("Completion") {
+                    if completionSeach.foundAlbum?.artworkUrl100 != nil {
+                        HStack {
+                            AsyncImage(url: URL(string: completionSeach.foundAlbum!.artworkUrl100)!)
+                            Text(completionSeach.foundAlbum?.collectionName ?? "")
+                        }
+                    } else {
+                        Text(completionSeach.foundAlbum?.collectionName ?? "")
+                    }
+                }
+                
+                Section("Async") {
+                    if asyncSearch.foundAlbum?.artworkUrl100 != nil {
+                        HStack {
+                            AsyncImage(url: URL(string: asyncSearch.foundAlbum!.artworkUrl100)!)
+                            Text(asyncSearch.foundAlbum?.collectionName ?? "")
+                        }
+                    } else {
+                        Text(asyncSearch.foundAlbum?.collectionName ?? "")
+                    }
                 }
             }
             .padding()
@@ -27,10 +46,17 @@ struct ContentView: View {
             Spacer()
             
             HStack {
-                Button("Completion") {
-                    completionSeach.runCompletionSearch(for: searchTerm)
+                Button("Search") {
+                    completionSeach.find(artist: searchTerm)
+                    asyncSearch.find(artist: searchTerm)
                 }
             }
+        }
+        .task {
+            asyncSearch.find(artist: searchTerm)
+        }
+        .onAppear {
+            completionSeach.find(artist: searchTerm)
         }
     }
 }
