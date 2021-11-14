@@ -51,7 +51,10 @@ class CombineSearch: ObservableObject {
             
             switch result {
             case .success(let collections):
-                let collectionId = collections.randomElement()?.collectionId ?? 0
+                guard let collectionId = collections.randomElement()?.collectionId else {
+                    self.foundAlbum = nil
+                    return
+                }
                 self.lookup(albumId: collectionId) { result in
                     DispatchQueue.main.async {
                         switch result {
