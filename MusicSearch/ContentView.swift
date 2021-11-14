@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var completionSeach = CompletionSearch()
+    @ObservedObject var combineSearch = CombineSearch()
     @ObservedObject var asyncSearch = AsyncSearch()
     @State var searchTerm = "Mark Knopfler"
     
@@ -19,8 +20,12 @@ struct ContentView: View {
                     TextField("Artist", text: $searchTerm)
                 }
                 
-                Section("completionSeach.foundAlbum") {
+                Section("completion") {
                     AlbumView(album: completionSeach.foundAlbum)
+                }
+                
+                Section("Combine") {
+                    AlbumView(album: combineSearch.foundAlbum)
                 }
                 
                 Section("Async") {
@@ -34,6 +39,7 @@ struct ContentView: View {
             HStack {
                 Button("Search") {
                     completionSeach.find(artist: searchTerm)
+                    combineSearch.find(artist: searchTerm)
                     asyncSearch.find(artist: searchTerm)
                 }
             }
@@ -43,6 +49,7 @@ struct ContentView: View {
         }
         .onAppear {
             completionSeach.find(artist: searchTerm)
+            combineSearch.find(artist: searchTerm)
         }
     }
 }

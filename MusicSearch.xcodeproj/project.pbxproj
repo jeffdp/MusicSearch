@@ -17,6 +17,7 @@
 		1F25C1CE274051EC00E809ED /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1CD274051EC00E809ED /* Data.swift */; };
 		1F25C1D02740521600E809ED /* CompletionSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1CF2740521600E809ED /* CompletionSearch.swift */; };
 		1F25C1D22740572C00E809ED /* AsyncSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1D12740572C00E809ED /* AsyncSearch.swift */; };
+		1F25C1D42740859A00E809ED /* CombineSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25C1D32740859A00E809ED /* CombineSearch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		1F25C1CD274051EC00E809ED /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		1F25C1CF2740521600E809ED /* CompletionSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionSearch.swift; sourceTree = "<group>"; };
 		1F25C1D12740572C00E809ED /* AsyncSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSearch.swift; sourceTree = "<group>"; };
+		1F25C1D32740859A00E809ED /* CombineSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineSearch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				1F25C1A52740515400E809ED /* ContentView.swift */,
 				1F25C1CD274051EC00E809ED /* Data.swift */,
 				1F25C1CF2740521600E809ED /* CompletionSearch.swift */,
+				1F25C1D32740859A00E809ED /* CombineSearch.swift */,
 				1F25C1D12740572C00E809ED /* AsyncSearch.swift */,
 				1F25C1A72740515500E809ED /* Assets.xcassets */,
 				1F25C1A92740515500E809ED /* Preview Content */,
@@ -271,6 +274,7 @@
 				1F25C1D02740521600E809ED /* CompletionSearch.swift in Sources */,
 				1F25C1CE274051EC00E809ED /* Data.swift in Sources */,
 				1F25C1A42740515400E809ED /* MusicSearchApp.swift in Sources */,
+				1F25C1D42740859A00E809ED /* CombineSearch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

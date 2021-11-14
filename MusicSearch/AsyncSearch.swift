@@ -29,8 +29,6 @@ class AsyncSearch: ObservableObject {
         Task { @MainActor in
             do {
                 let collections = try await collections(for: artist)
-                
-                print("Found \(collections.count) albums")
                 let collectionId = collections.randomElement()?.collectionId ?? 0
                 self.foundAlbum = try await lookup(albumId: collectionId)
             } catch let error {

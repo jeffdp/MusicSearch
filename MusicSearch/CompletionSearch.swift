@@ -71,13 +71,11 @@ class CompletionSearch: ObservableObject {
             
             switch result {
             case .success(let collections):
-                print("Found \(collections.count) albums")
                 let collectionId = collections.randomElement()?.collectionId ?? 0
                 self.lookup(albumId: collectionId) { result in
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let album):
-                            print(album.collectionName)
                             self.foundAlbum = album
                         case .failure(let error):
                             print(error.localizedDescription)
