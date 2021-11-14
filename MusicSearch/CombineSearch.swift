@@ -10,37 +10,41 @@ import Combine
 
 class CombineSearch: ObservableObject {
     @Published var foundAlbum: Album?
-    var cancellable: Cancellable?
+    var observers = Set<AnyCancellable>()
     
-    func collections(for artist: String, completion: @escaping (Result<[Collection], MusicError>) -> Void) {
+    func collections(for artist: String, completion: @escaping (Result<[Collection], Error>) -> Void) {
         let url = CollectionSearch.searchUrl(for: artist)
-        cancellable = URLSession.shared.dataTaskPublisher(for: url)
+        URLSession.shared.dataTaskPublisher(for: url)
             .tryMap() { $0.data }
             .decode(type: CollectionSearch.self, decoder: JSONDecoder())
             .map { $0.results }
-            .sink(receiveCompletion: { _ in
-                completion(.failure(MusicError.noSearchData))
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { result in
+                if case let .failure(error) = result {
+                    completion(.failure(error))
+                }
             }, receiveValue: { collections in
                 completion(.success(collections))
             })
+            .store(in: &observers)
     }
     
-    func lookup(albumId: Int, completion: @escaping (Result<Album, MusicError>) -> Void) {
+    func lookup(albumId: Int, completion: @escaping (Result<Album?, Error>) -> Void) {
         let url = AlbumLookup.lookupUrl(for: albumId)
         let searchRequest = URLRequest(url: url)
-        cancellable = URLSession.shared.dataTaskPublisher(for: searchRequest)
+        URLSession.shared.dataTaskPublisher(for: searchRequest)
             .tryMap() { $0.data }
             .decode(type: AlbumLookup.self, decoder: JSONDecoder())
             .map { $0.results }
-            .sink(receiveCompletion: { _ in
-                completion(.failure(MusicError.noLookupData))
-            }, receiveValue: { albums in
-                guard let album = albums.first else {
-                    completion(.failure(.noLookupData))
-                    return
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { result in
+                if case let .failure(error) = result {
+                    completion(.failure(error))
                 }
-                completion(.success(album))
+            }, receiveValue: { albums in
+                completion(.success(albums.first))
             })
+            .store(in: &observers)
     }
     
     func find(artist: String) {
@@ -56,13 +60,11 @@ class CombineSearch: ObservableObject {
                     return
                 }
                 self.lookup(albumId: collectionId) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let album):
-                            self.foundAlbum = album
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        }
+                    switch result {
+                    case .success(let album):
+                        self.foundAlbum = album
+                    case .failure(let error):
+                        print(error.localizedDescription)
                     }
                 }
             case .failure(let error):
