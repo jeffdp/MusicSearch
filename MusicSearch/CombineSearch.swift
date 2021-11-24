@@ -46,30 +46,35 @@ class CombineSearch: ObservableObject {
             })
             .store(in: &observers)
     }
+
+    func lookup(artist: String, completion: @escaping (Album?) -> Void) {
+        Future<[Collection], Error> { promise in
+            self.collections(for: artist, completion: promise)
+        }
+        .flatMap { collections in
+            Future<Album?, Error> { promise in
+                if let collectionId = collections.randomElement()?.collectionId {
+                    self.lookup(albumId: collectionId, completion: promise)
+                }
+            }
+        }
+        .receive(on: DispatchQueue.main)
+        .sink(receiveCompletion: { result in
+            if case let .failure(error) = result {
+                print(error.localizedDescription)
+                completion(nil)
+            }
+        }, receiveValue: { album in
+            completion(album)
+        })
+        .store(in: &observers)
+    }
     
     func find(artist: String) {
         foundAlbum = nil
         
-        collections(for: artist) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let collections):
-                guard let collectionId = collections.randomElement()?.collectionId else {
-                    self.foundAlbum = nil
-                    return
-                }
-                self.lookup(albumId: collectionId) { result in
-                    switch result {
-                    case .success(let album):
-                        self.foundAlbum = album
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        lookup(artist: artist) { album in
+            self.foundAlbum = album
         }
     }
 }
